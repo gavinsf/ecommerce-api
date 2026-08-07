@@ -8,7 +8,7 @@
 
 ### Technologies and Libraries:
 - FastAPI
-- React
+- Testing using PyTest with httpx
 - Docker
 - Deployed on EC2 instance
 - Alembic
@@ -17,7 +17,7 @@
 - PostgreSQL
 
 ## To be added:
-- Testing using PyTest with httpx
+- Complete React Frontend
 - Redis caching
 - RDS instead of local DB
 - CI/CD using Github actions
