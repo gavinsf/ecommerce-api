@@ -109,3 +109,48 @@ code {
   padding: 4px 8px;
   background: var(--code-bg);
 }
+
+nav a {
+  color: var(--text-h);
+  text-decoration: none;
+}
+
+nav a:hover {
+  color: var(--accent);
+}
+
+.product-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 16px;
+  text-align: left;
+}
+
+.product-card {
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.product-card h3 {
+  margin: 0;
+  font-size: 18px;
+  color: var(--text-h);
+}
+
+.product-card-price {
+  font-weight: 600;
+  color: var(--text-h);
+}
+
+.product-card-stock {
+  font-size: 14px;
+}
+
+.product-card a {
+  color: var(--accent);
+  margin-top: 8px;
+}

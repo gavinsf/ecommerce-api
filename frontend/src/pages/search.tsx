@@ -1,10 +1,10 @@
 import { useState } from 'react';
-import type { SubmitEventHandler } from 'react';
-import { Link, useLoaderData, useNavigate, useSearchParams } from 'react-router-dom'
-import { API_URL } from '../globals';
+import { useLoaderData, useSearchParams } from 'react-router-dom'
+import { productsApi, type Product } from '../lib/api';
+import ProductCard from '../components/product_card';
 
 export default function Search() {
-    const products = useLoaderData() as any[];
+    const products = useLoaderData() as Product[];
     const [searchParams, setSearchParams] = useSearchParams();
 
     const [inputValue, setInputValue] = useState(searchParams.get('q') || '');
@@ -29,7 +29,7 @@ export default function Search() {
                         type="text"
                         placeholder="Search for items..."
                         value={inputValue}
-                        onChange={(e) => setInputValue(e.target.value)} // Just updates local state, doesn't search yet
+                        onChange={(e) => setInputValue(e.target.value)}
                         style={{ padding: '8px 12px', width: '300px', borderRadius: '4px', border: '1px solid #ccc' }}
                     />
                     <button type="submit" style={{ padding: '8px 16px', cursor: 'pointer' }}>
@@ -41,15 +41,9 @@ export default function Search() {
             <hr style={{ margin: '20px 0', borderColor: '#eee' }} />
 
             {/* Search Results Matrix */}
-            <div style={{ display: 'grid', gap: '16px' }}>
+            <div className="product-grid">
                 {products.length > 0 ? (
-                    products.map((product) => (
-                        <div key={product.id} style={{ border: '1px solid #eee', padding: '12px', borderRadius: '4px' }}>
-                            <h3>{product.name}</h3>
-                            <p>${product.price}</p>
-                            <Link to={`/products/${product.id}`}>View Product</Link>
-                        </div>
-                    ))
+                    products.map((product) => <ProductCard key={product.id} product={product} />)
                 ) : (
                     searchParams.get('q') && <p>No products found matching "{searchParams.get('q')}"</p>
                 )}
@@ -64,11 +58,9 @@ export async function searchLoader({ request }: { request: Request }) {
 
     if (!q) return [];
 
-    const response = await fetch(`${API_URL}products/?name=${encodeURIComponent(q)}`);
-    if (response.status === 404) {
+    try {
+        return await productsApi.search(q);
+    } catch {
         return [];
     }
-    if (!response.ok) throw new Response("Failed to search", { status: response.status });
-
-    return response.json()
 }
